@@ -9,12 +9,10 @@ console.log(exercises.find(excercise => excercise.id === 3));
 
 console.log(exercises.map(excercise => excercise.name)); */
 
-
 // ================================================================================
 
 /* exercises.push({ id: 6, name: "데드리프트", bodyPart: "back", equipment: "barbell" });
 console.log(exercises); */
-
 
 // ================================================================================
 
@@ -74,3 +72,28 @@ deleteExercise(5);
 console.log(exercises); */
 
 // ================================================================================
+
+/* function updateExercise(id) {
+    const result = exercises.find(exercise => exercise.id === id);
+
+    console.log(result)
+}
+
+updateExercise(3); */
+
+// ================================================================================
+
+function updateExercise(id, name, bodyPart, equipment) {
+    const result = exercises.find(exercise => exercise.id === id);
+
+    if (result) {
+        result.name = name;
+        result.bodyPart = bodyPart;
+        result.equipment = equipment;
+    }
+
+    console.log(exercises);
+}
+
+updateExercise(3, "랫풀다운 머신", "back", "cable");
+updateExercise(100, "테스트", "legs", "machine");
