@@ -1,5 +1,6 @@
 import { exercises } from "./exercises.js";
 import { workoutLogs } from "./workoutLogs.js";
+import { routine } from "./routine.js";
 
 /* 
 feat:	    새로운 기능 추가	
@@ -446,6 +447,102 @@ function calculateExerciseDailyVolume(date, exerciseId) {
 
 console.log(calculateExerciseDailyVolume("2026-10-15", 1));
  */
+
+
+//#endregion
+
+
+//#region /* ============================================================ 요일별 루틴 등록·수정·삭제 CRUD ============================================================ */
+
+
+/* ============================== 요일별 운동 루틴 조회(Read) ============================== */
+
+/* 
+function getRoutineByDay(weekType, day) {
+
+    // 두 조건이 일치하는 루틴 조회
+    const dailyRoutine = routine.find(route => (route.weekType === weekType && route.day === day));
+
+    // 조회 결과 반환
+    return dailyRoutine;
+}
+
+console.log(getRoutineByDay("A", "monday"));
+console.log(getRoutineByDay("B", "wednesday"));
+ */
+
+/* ============================== 요일별 운동 루틴 등록(Create) ============================== */
+
+/* 
+function addRoutine(weekType, day, isRestDay, exerciseIds) {
+
+    // 1. 중복 확인
+    const isDuplicate = routine.some(route => route.weekType === weekType && route.day === day);
+
+    if (isDuplicate) {
+        console.log("중복 등록 거부")
+        return;
+    }
+
+    // 2. 새로운 ID 생성
+    const id = routine.map(route => route.id);
+
+    const newId = Math.max(...id) + 1;
+
+    // 3. 새로운 객체 생성
+    const route = {
+        id: newId, weekType, day, isRestDay, exerciseIds
+    };
+
+    // 4. 배열에 추가
+    routine.push(route);
+    
+    console.log("등록 성공");
+}
+
+addRoutine("A", "monday", false, [1, 2, 3]);
+
+addRoutine("C", "monday", false, [1, 2, 3]);
+console.log(routine.at(-1));
+ */
+
+/* ============================== 요일별 운동 루틴 수정(Update) ============================== */
+
+/* 
+function updateRoutine(id, isRestDay, exerciseIds) {
+
+    // 1. id로 수정할 루틴 찾기
+    const updateRoute = routine.find(route => route.id === id);
+
+    // 2. 루틴이 존재하면 isRestDay 수정
+    if (updateRoute) {
+        updateRoute.isRestDay = isRestDay;
+        updateRoute.exerciseIds = exerciseIds;
+    }
+
+    console.log(updateRoute);
+}
+
+updateRoutine(6, false, [1, 2, 3]);
+*/
+
+/* ============================== 요일별 운동 루틴 삭제(Delete) ============================== */
+
+function deleteRoutine(id) {
+
+    // 1. id에 해당하는 루틴의 배열 인덱스 찾기
+    const deleteRoute = routine.findIndex(route => route.id === id);
+
+    // 2. 해당 루틴이 존재하는지 확인
+    if (deleteRoute !== -1) {
+        routine.splice(deleteRoute, 1);
+    }   
+}
+
+deleteRoutine(6);
+
+console.log(routine.find(route => route.id === 6));
+console.log(routine.find(route => route.id === 7));
 
 
 //#endregion
