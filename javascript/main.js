@@ -9,7 +9,7 @@ docs:	    문서 수정
 test:	    테스트 추가·수정	
 
 git add .
-git commit -m "feat: 중복 등록·잘못된 입력 검사"
+git commit -m "feat: 세트별·일별 운동량 계산"
 git push
 */
 
@@ -370,6 +370,81 @@ function deleteWorkoutLog(id) {
 deleteWorkoutLog(3);
 console.log(workoutLogs.find(logs => logs.id === 3));
 console.log(workoutLogs.find(logs => logs.id === 4));
+ */
+
+
+//#endregion
+
+
+//#region /* ============================================================ 세트별·일별 운동량 계산 ============================================================ */
+
+
+/* ============================== 세트별 운동량 계산 ============================== */
+
+/* 
+function calculateSetVolume(weight, reps) {
+
+    return weight * reps;
+}
+
+console.log(calculateSetVolume(60, 15));
+console.log(calculateSetVolume(100, 10));
+ */
+
+
+/* ============================== 일별 운동량 계산 ============================== */
+
+/* 
+function calculateDailyVolume(date) {
+
+    // 1. 해당 날짜의 운동 기록 찾기
+    const dailyLogs = workoutLogs.filter(logs => logs.date === date);
+
+    // 2. 각 기록의 운동량 계산 및 합산
+    const sum = dailyLogs.reduce((total, log) => { return total + log.weight * log.reps }, 0);
+
+    // 4. 합산 결과 반환
+    return sum;
+}
+
+console.log(calculateDailyVolume("2026-10-15"));
+ */
+
+
+/* ============================== 운동 종목별 운동량 계산 ============================== */
+
+/* 
+function calculateExerciseVolume(exerciseId) {
+
+    // 1. 해당 운동 종목의 기록만 필터링
+    const exerciseLogs = workoutLogs.filter(logs => logs.exerciseId === exerciseId);
+
+    // 2. 각 기록의 볼륨을 reduce()로 합산
+    const sum = exerciseLogs.reduce((total, log) => { return total + log.weight * log.reps }, 0);
+
+    // 3. 결과 반환
+    return sum;
+}
+
+console.log(calculateExerciseVolume(1));
+ */
+
+/* ============================== 운동 종목별 운동량 계산 ============================== */
+
+/* 
+function calculateExerciseDailyVolume(date, exerciseId) {
+    
+    // 1. 해당 날짜이면서 해당 운동 종목인 기록 필터링
+    const exercisedailyLogs = workoutLogs.filter(logs => (logs.date === date && logs.exerciseId === exerciseId));
+
+    // 2. reduce()로 볼륨 합산
+    const sum = exercisedailyLogs.reduce((total, log) => { return total + log.weight * log.reps },0);
+
+    // 3. 결과 반환
+    return sum;
+}
+
+console.log(calculateExerciseDailyVolume("2026-10-15", 1));
  */
 
 
