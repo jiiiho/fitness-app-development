@@ -1,4 +1,5 @@
 import { exercises } from "./exercises.js";
+import { workoutLogs } from "./workoutLogs.js";
 
 /* 
 feat:	    새로운 기능 추가	
@@ -8,11 +9,12 @@ docs:	    문서 수정
 test:	    테스트 추가·수정	
 
 git add .
-git commit -m "feat: implement exercise deletion"
+git commit -m "feat: 중복 등록·잘못된 입력 검사"
 git push
 */
 
-/* ============================================================ 운동 종목 검색·부위별 필터링 ============================================================ */
+
+//#region /* ============================================================ 운동 종목 검색·부위별 필터링 ============================================================ */
 
 
 /* ============================== 운동 종목 검색 ============================== */
@@ -44,7 +46,10 @@ console.log(filterExercisesByBodyPart("back"));
 */
 
 
-/* ============================================================ 운동 종목 추가·조회·수정·삭제(CRUD) ============================================================ */
+//#endregion
+
+
+//#region /* ============================================================ 운동 종목 추가·조회·수정·삭제(CRUD) ============================================================ */
 
 
 /* ============================== 운동 종목 조회 ============================== */
@@ -162,7 +167,10 @@ updateExercise(100, "테스트", "legs", "machine");
 */
 
 
-/* ============================================================ 중복 등록·잘못된 입력 검사 ============================================================ */
+//#endregion
+
+
+//#region /* ============================================================ 중복 등록·잘못된 입력 검사 ============================================================ */
 
 
 /* ============================== 운동 종목 중복 등록 검사 ============================== */
@@ -180,8 +188,7 @@ function addExercise(name, bodyPart, equipment) {
         id: newId, name, bodyPart, equipment
     };
 
-    if (isDuplicate)
-    {
+    if (isDuplicate) {
         console.log("이미 등록된 운동입니다.")
         return;
     }
@@ -199,6 +206,7 @@ console.log(exercises);
 
 /* ============================== 운동 종목 입력값 유효성 검사 ============================== */
 
+/* 
 function addExercise(name, bodyPart, equipment) {
   
     const isInvalid = name.trim() === "" || bodyPart.trim() === "" || equipment.trim() === "";
@@ -255,3 +263,114 @@ console.log(exercises);
 
 addExercise(" 풀업 ", "back", "bodyweight");
 addExercise("풀업", "back", "bodyweight");
+*/
+
+
+//#endregion
+
+
+//#region /* ============================================================ 무게·횟수·세트·날짜별 운동 기록 CRUD ============================================================ */
+
+
+/* ============================== 운동 기록 등록 (Create) ============================== */
+
+/* 
+function addWorkoutLog(exerciseId, date, weight, reps, set) {
+
+    // 1. 기존 운동 기록의 ID 추출
+    const ids = workoutLogs.map(logs => logs.id);
+
+    // 2. 새로운 ID 생성
+    const newId = Math.max(...ids) + 1;
+
+    // 3. 새로운 운동 기록 객체 생성
+    const newLog = {
+        id: newId, exerciseId, date, weight, reps, set
+    };
+
+    // 4. workoutLogs 배열에 추가
+    workoutLogs.push(newLog);
+}
+
+addWorkoutLog(1, "2026-10-16", 60, 15, 1);
+console.log(workoutLogs.at(-1));
+ */
+
+
+/* ============================== 운동 기록 조회 (Read) ============================== */
+
+/* 
+function getWorkoutLogById(id) {
+    
+    const getLogs = workoutLogs.find(logs => logs.id === id);
+
+    return getLogs;
+}
+
+console.log(getWorkoutLogById(3));
+console.log(getWorkoutLogById(100));
+ */
+
+/* 
+function getWorkoutLogsByExerciseId(exerciseId) {
+    
+    const getLogs = workoutLogs.filter(logs => logs.exerciseId === exerciseId);
+
+    return getLogs;
+}
+
+console.log(getWorkoutLogsByExerciseId(1));
+console.log(getWorkoutLogsByExerciseId(100));
+ */
+
+/* 
+function getWorkoutLogsByDate(date) {
+    
+    const getLogs = workoutLogs.filter(logs => logs.date === date);
+
+    return getLogs;
+}
+
+console.log(getWorkoutLogsByDate("2026-10-15"));
+console.log(getWorkoutLogsByDate("2026-10-20"));
+ */
+
+
+/* ============================== 운동 기록 수정 (Update) ============================== */
+
+/* 
+function updateWorkoutLog(id, weight, reps) {
+    
+    const getLogs = workoutLogs.find(logs => logs.id === id);
+
+    if (getLogs) {
+        getLogs.weight = weight;
+        getLogs.reps = reps;
+    }
+
+    console.log(getLogs);
+}
+
+updateWorkoutLog(3, 70, 12);
+ */
+
+
+/* ============================== 운동 기록 삭제 (Delete) ============================== */
+
+/* 
+function deleteWorkoutLog(id) {
+    
+    const getLogs = workoutLogs.findIndex(logs => logs.id === id);
+
+    if (getLogs !== -1) {
+        workoutLogs.splice(getLogs, 1)
+    }
+}
+
+deleteWorkoutLog(3);
+console.log(workoutLogs.find(logs => logs.id === 3));
+console.log(workoutLogs.find(logs => logs.id === 4));
+ */
+
+
+//#endregion

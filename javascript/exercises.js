@@ -1,3 +1,5 @@
+/* ============================== 운동 정보 데이터 구조 설계 ============================== */
+
 export const exercises = [
 
     { id: 1, name: "스쿼트", bodyPart: "legs", equipment: "barbell" },
@@ -14,5 +16,6 @@ export const exercises = [
     { id: 12, name: "레그컬", bodyPart: "legs", equipment: "machine" },
     { id: 13, name: "핵스쿼트", bodyPart: "legs", equipment: "machine" },
     { id: 14, name: "페이스풀", bodyPart: "shoulders", equipment: "cable" },
-    { id: 15, name: "케이블 푸시다운", bodyPart: "arms", equipment: "cable" }
+    { id: 15, name: "케이블 푸시다운", bodyPart: "arms", equipment: "cable" },
+    { id: 16, name: "힙 어브덕션", bodyPart: "legs", equipment: "machine" }
 ];
