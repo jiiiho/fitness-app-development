@@ -1,17 +1,21 @@
 import { exercises } from "./exercises.js";
 import { workoutLogs } from "./workoutLogs.js";
 import { routine } from "./routine.js";
+import fs from "node:fs";
+import fsPromises from "node:fs/promises";
 
 /* 
-feat:	    새로운 기능 추가	
-fix:	    버그 수정
-refactor:	기능 변경 없는 코드 구조 개선	
-docs:	    문서 수정
-test:	    테스트 추가·수정	
+feat:               새로운 기능 추가	
+fix:                 버그 수정
+refactor:        기능 변경 없는 코드 구조 개선	
+docs:              문서 수정
+test:               테스트 추가·수정	
 
 git add .
-git commit -m "feat: 세트별·일별 운동량 계산"
+git commit -m "feat: JSON 저장·불러오기 및 비동기 처리"
 git push
+
+git restore exercises.js
 */
 
 
@@ -471,6 +475,7 @@ console.log(getRoutineByDay("A", "monday"));
 console.log(getRoutineByDay("B", "wednesday"));
  */
 
+
 /* ============================== 요일별 운동 루틴 등록(Create) ============================== */
 
 /* 
@@ -506,6 +511,7 @@ addRoutine("C", "monday", false, [1, 2, 3]);
 console.log(routine.at(-1));
  */
 
+
 /* ============================== 요일별 운동 루틴 수정(Update) ============================== */
 
 /* 
@@ -526,8 +532,10 @@ function updateRoutine(id, isRestDay, exerciseIds) {
 updateRoutine(6, false, [1, 2, 3]);
 */
 
+
 /* ============================== 요일별 운동 루틴 삭제(Delete) ============================== */
 
+/* 
 function deleteRoutine(id) {
 
     // 1. id에 해당하는 루틴의 배열 인덱스 찾기
@@ -543,6 +551,169 @@ deleteRoutine(6);
 
 console.log(routine.find(route => route.id === 6));
 console.log(routine.find(route => route.id === 7));
+*/
+
+
+//#endregion
+
+
+//#region /* ============================================================ JSON 저장·불러오기 및 비동기 처리 ============================================================ */
+
+
+/* ============================== JSON.stringify()로 객체를 JSON 문자열로 변환 ============================== */
+
+/* 
+function convertExercisesToJSON() {
+
+    // 1. exercises 배열을 JSON 문자열로 변환
+    const jsondata = JSON.stringify(exercises)
+
+
+    // 2. 변환된 문자열 반환
+    console.log(typeof exercises);
+    console.log(typeof jsondata);
+
+    return jsondata;
+}
+
+console.log(convertExercisesToJSON());
+ */
+
+
+/* ============================== JSON.parse()로 JSON 문자열을 객체로 변환 ============================== */
+
+/* 
+function convertJSONToExercises() {
+
+    // 1. exercises 배열을 JSON 문자열로 변환
+    const jsondata = JSON.stringify(exercises);
+
+    // 2. JSON 문자열을 JavaScript 배열로 복원
+    const restoredata = JSON.parse(jsondata);
+
+    // 3. 복원한 배열 반환
+    console.log(typeof restoredata);
+    console.log(Array.isArray(restoredata));
+
+    return restoredata;
+}
+
+// 함수 실행 및 결과 확인
+
+console.log(convertJSONToExercises());
+ */
+
+
+/* ============================== Node.js fs 모듈로 JSON 파일 저장 ============================== */
+
+/* 
+function saveExercisesToJSON() {
+
+    // 1. exercises 배열을 JSON 문자열로 변환
+    const jsondata = JSON.stringify(exercises, null, 2);
+
+    // 2. JSON 문자열을 exercises.json 파일에 저장
+    fs.writeFileSync("./exercises.json", jsondata);
+
+    return jsondata;
+}
+
+saveExercisesToJSON();
+*/
+
+
+/* ============================== JSON 파일에서 데이터 불러오기 ============================== */
+
+/* 
+function loadExercisesFromJSON() {
+
+    // 1. exercises.json 파일 읽기
+    const jsondata = fs.readFileSync("./exercises.json", "utf-8");
+
+    // 2. JSON 문자열을 JavaScript 배열로 변환
+    const restoredata = JSON.parse(jsondata);
+
+    // 3. 복원한 배열 반환
+    console.log(typeof restoredata);
+    console.log(Array.isArray(restoredata));
+
+    return restoredata;
+}
+
+// 함수 실행 및 결과 확인
+console.log(loadExercisesFromJSON());
+*/
+
+
+/* ============================== async/await를 사용한 비동기 저장 및 불러오기 ============================== */
+
+/* 
+// 문제 A: 비동기 저장
+async function saveExercisesAsync() {
+
+    // 1. exercises 배열을 JSON 문자열로 변환
+    const jsondata = JSON.stringify(exercises);
+
+    // 2. await를 사용해서 JSON 파일 저장
+    await fsPromises.writeFile("./exercises.json", jsondata);
+
+    // 3. 저장 완료 메시지 출력
+    console.log("운동 종목 저장 완료");
+}
+
+// 문제 B: 비동기 불러오기
+async function loadExercisesAsync() {
+    
+    // 1. await를 사용해서 JSON 파일 읽기
+    const jsondata = await fsPromises.readFile("./exercises.json", "utf-8");
+
+    // 2. JSON 문자열을 배열로 복원
+    const restoredata = JSON.parse(jsondata);
+
+    // 3. 복원한 배열 반환
+    console.log(Array.isArray(restoredata));
+
+    return restoredata;
+}
+
+await saveExercisesAsync();
+
+const loaded = await loadExercisesAsync();
+
+console.log(loaded);
+ */
+
+
+/* ============================== 저장된 데이터가 없거나 파일을 읽지 못할 때 예외 처리 ============================== */
+
+
+async function loadExercisesWithErrorHandling() {
+
+    try {
+        // 1. JSON 파일 읽기
+        const jsondata = await fsPromises.readFile("./exercises.json", "utf-8");
+
+        // 2. JSON 문자열을 배열로 변환
+        const restoredata = JSON.parse(jsondata);
+
+        // 3. 복원한 배열 반환
+        console.log(Array.isArray(restoredata));
+
+        return restoredata;
+    }
+    catch (error) {
+        // 4. 오류 메시지 출력
+        console.log("운동 종목 불러오기 실패")
+
+        // 5. 빈 배열 반환
+        return [];
+    }
+}
+
+// 함수 실행 및 결과 확인
+const loaded = await loadExercisesWithErrorHandling();
+
+console.log(loaded);
 
 
 //#endregion
