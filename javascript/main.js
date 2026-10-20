@@ -13,7 +13,7 @@ docs:           문서 수정
 test:           테스트 추가·수정	
 
 git add .
-git commit -m "feat: JSON 저장·불러오기 및 비동기 처리"
+git commit -m "feat: 통합 테스트 및 기본 기능 완성"
 git push 
 */
 
@@ -1068,10 +1068,112 @@ function testRoutineExerciseIntegration() {
 testRoutineExerciseIntegration();
 
 // ================================================================================
- */
+*/
+
 
 // 전체 기능 통합 테스트 및 코드 정리
 // ================================================================================
+
+/* // 10-6-1. 운동 종목 JSON 파일을 불러오고 전체 운동 개수 출력
+
+async function loadExercisesAsync() { 
+        
+    const jsondata = await fsPromises.readFile("./exercises.json", "utf-8");
+
+    const restoredata = JSON.parse(jsondata);
+
+    return restoredata;
+}
+
+const loaded = await loadExercisesAsync()
+
+console.log(loaded.length);
+ */
+
+/* // 10-6-2. 운동 기록 JSON 파일을 불러오고 전체 기록 개수 출력
+
+async function loadworkoutLogsAsync() {
+    
+    const jsondata = await fsPromises.readFile("./workoutLogs.json", "utf-8");
+
+    const restoredata = JSON.parse(jsondata);
+
+    return restoredata;
+}
+
+const loaded = await loadworkoutLogsAsync();
+
+console.log(`전체 운동 기록 수: ${loaded.length}`);
+ */
+
+/* // 10-6-3. 특정 루틴을 선택하고 해당 루틴의 운동 이름 출력
+
+function testRoutineExerciseIntegration() {
+
+    const selectedRoutine = routine.find(route => route.id === 3);
+
+    const exerciseIds = selectedRoutine.exerciseIds;
+    
+    const result = exerciseIds.map(id => {
+        
+        const exercise = exercises.find(ex => ex.id === id);
+
+        return exercise.name;
+    })
+
+    console.log(result);
+}
+
+testRoutineExerciseIntegration();
+*/
+
+/* // 10-6-4. 존재하지 않는 루틴 ID를 조회했을 때 오류 없이 처리
+
+function testRoutineExerciseIntegration() {
+
+    const selectedRoutine = routine.find(route => route.id === 3);
+
+    if (!selectedRoutine) {
+        
+        console.log("존재하지 않는 루틴입니다.") 
+        return;
+    }
+
+    console.log(selectedRoutine);
+}
+
+testRoutineExerciseIntegration();
+ */
+
+// 10-6-5. 존재하지 않는 운동 ID가 루틴에 포함되었을 때 오류 없이 처리
+
+function testRoutineExerciseIntegration() {
+
+    const selectedRoutine = routine.find(route => route.id === 1);
+
+    const exerciseIds = [...selectedRoutine.exerciseIds];
+
+    exerciseIds.push(999);
+    
+    const result = exerciseIds.map(id => {
+        
+        const exercise = exercises.find(ex => ex.id === id);
+
+        if (!exercise) {
+            
+            return "존재하지 않는 운동입니다";
+        }
+
+        return exercise.name;
+    })
+
+    console.log(result);
+}
+
+testRoutineExerciseIntegration();
+
+// 10-6-6. 지금까지 작성한 코드에서 중복 로직과 불필요한 변수 정리
+
 
 
 
